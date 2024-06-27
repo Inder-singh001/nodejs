@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Form</title>
+</head>
+<body>
+    <h2>Task Form</h2>
+    <form action="/submit-task" method="post">
+        <label for="task">Task:</label><br>
+        <input type="text" id="task" name="task"><br><br>
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Submitted Task</h2>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('task-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const task = document.getElementById('task').value;
+            const description = document.getElementById('description').value;
+
+            // Create elements to display the task and description
+            const taskOutput = document.createElement('p');
+            taskOutput.textContent = `Task: ${task}`;
+
+            const descriptionOutput = document.createElement('p');
+            descriptionOutput.textContent = `Description: ${description}`;
+
+            // Clear the output div
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            // Append the task and description to the output div
+            outputDiv.appendChild(taskOutput);
+            outputDiv.appendChild(descriptionOutput);
+
+            alert("Submitted successfully");
+
+            // Send data to the server using Fetch API
+            fetch('/submit-task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ task: task, description: description })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (!data.status) {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
