@@ -2,6 +2,9 @@ const { createServer } = require("http") // Default node js
 const express = require("express") // import package
 const bodyParser = require('body-parser')
 const app = express() // hit package function
+const {add} = require('./test')(" var ")
+console.log(add)
+
 
 app.use(bodyParser.json()) // use boday parser as a middleware
 
@@ -86,7 +89,7 @@ app.put('/contact-form/put',(req, res)=>{
     }
 })
 
-app.listen(3001,()=>{
+app.listen(3002,()=>{
     console.log("yes done")
 })
 
